@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^6.4.0",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "request": "^2.85.0"
   }
 }
