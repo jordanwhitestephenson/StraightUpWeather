@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "ajv": "^6.4.0",
+    "express": "^4.16.3",
+    "react": "^0.14.9",
+    "react-d3-basic": "^1.6.11",
+    "react-dom": "^0.14.9",
     "react-scripts": "1.1.4"
   },
   "scripts": {
