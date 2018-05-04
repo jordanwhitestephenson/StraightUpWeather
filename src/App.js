@@ -11,11 +11,10 @@ class App extends Component {
     super();
     this.state = {
       input: '',
-      zipcode: '80223'
+      zipcode: '',
     }
+     this.onButtonSubmit = this.onButtonSubmit.bind(this);
   }
-  // ${this.state.zipcode}
-  //
 
 
   onInputChange = (event) => {
@@ -24,24 +23,17 @@ class App extends Component {
   onButtonSubmit = () => {
     this.setState({zipcode: this.state.input});
   }
-  onZipCodeSubmit = () => {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${this.state.zipcode},us&APPID=5ce5187ddbef19cc1c72ce490a99d786`).then((resp) => resp.json()).then(function(data) {
-      console.log(data)
-    }).catch(function(error) {
-      console.log(error);
-    })
-  }
 
   render() {
-    const {zipcode} = this.state;
+    const {zipcode, weather} = this.state;
     return (<section>
       <div className="flex flex-column items-center">
         <Navbar/>
-        <InputForm onInputChange={this.onInputChange} onZipCodeSubmit = {this.onZipCodeSubmit()} onButtonSubmit={this.onButtonSubmit} />
+        <InputForm onInputChange={this.onInputChange}  onButtonSubmit={this.onButtonSubmit} />
+        <Map zipcode={zipcode}/>
       </div>
-      <Map zipcode={zipcode} />
-      <WeatherChart/>
 
+      <WeatherChart zipcode = {zipcode}/>
     </section>);
   }
 }

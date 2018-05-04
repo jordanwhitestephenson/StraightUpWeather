@@ -1,7 +1,25 @@
 import React, {Component} from 'react';
 import { Chart } from 'react-d3-core'
 import { LineChart } from 'react-d3-basic'
-
+// componentWillReceiveProps(nextProps) {
+//
+//    fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${nextProps.zipcode},us&APPID=5ce5187ddbef19cc1c72ce490a99d786`)
+//    .then(res => res.json())
+//    .then(
+//     (result) => {
+//       console.log(result)
+//       this.setState({
+//         weather: result.main.temp,
+//         name: result.name
+//
+//       });
+//     }
+//   )
+//   .catch(function(error) {
+//     console.log(error);
+//   })
+//
+// }
 
 var chartData = [
   {
