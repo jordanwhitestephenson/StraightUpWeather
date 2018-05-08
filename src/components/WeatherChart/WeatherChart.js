@@ -1,86 +1,126 @@
 import React, {Component} from 'react';
 import { Chart } from 'react-d3-core'
-import { LineChart } from 'react-d3-basic'
-// componentWillReceiveProps(nextProps) {
-//
-//    fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${nextProps.zipcode},us&APPID=5ce5187ddbef19cc1c72ce490a99d786`)
-//    .then(res => res.json())
-//    .then(
-//     (result) => {
-//       console.log(result)
-//       this.setState({
-//         weather: result.main.temp,
-//         name: result.name
-//
-//       });
-//     }
-//   )
-//   .catch(function(error) {
-//     console.log(error);
-//   })
-//
-// }
+import { BarChart } from 'react-d3-basic'
 
-var chartData = [
-  {
-    name: "Lavon Hilll I",
-    BMI: 20.57,
-    age: 12,
-    birthday: "1994-10-26T00:00:00.000Z",
-    city: "Annatown",
-    married: true,
-    index: 1
-  },
-  {
-    name: "Lavon Hilll I",
-    BMI: 50.57,
-    age: 12,
-    birthday: "1994-10-26T00:00:00.000Z",
-    city: "Annatown",
-    married: true,
-    index: 1
-  },
-
-];
-var width = 700,
-    height = 300,
-    margins = {left: 100, right: 100, top: 50, bottom: 50},
-    title = "User sample",
+var width = 405,
+    height = 100,
+    margins = {left: 80, right: 80, top: 50, bottom: 50},
+    title = "Your Weather",
     chartSeries = [
-      {
-        field: 'BMI',
-        name: 'BMI',
-        color: '#ff7f0e'
-      }
-    ],
-    // your x accessor
+      {field: 'temp',
+        name: 'temp',
+        color: '#19a974'}
+      ],
     x = function(d) {
-      return d.index;
-    }
+      return d.dt
+    },
+    xScale = 'ordinal',
+    xLabel = "5 Day Forcast",
+    yLabel = "Temperatures"
+
+
+
 class WeatherChart extends Component {
+  constructor() {
+    super();
+    this.state = {
+      temperatures: [],
+      loaded: false
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    fetch(`http://api.openweathermap.org/data/2.5/forecast?zip=${props.zipcode},us&units=imperial&APPID=5ce5187ddbef19cc1c72ce490a99d786`)
+       .then(res => res.json())
+       .then(
+        (result) => {
+          var newArray;
+          var indexArray;
+          var pushedArray = []
+          var iterator = 0
+          var object2;
+          result.list.forEach((num, index) => {
+            newArray = result.list[index].main
+            pushedArray.push(newArray)
+          });
+          pushedArray.forEach(function(item, index) {
+            var longDate = result.list[index].dt_txt
+            var date1 = new Date(longDate)
+            var convertedDate = date1.getUTCDay()
+            switch(convertedDate){
+              case 0:
+              item["dt"] = 'Sun'
+              break;
+              case 1:
+              item["dt"] = 'Mon'
+              break;
+              case 2:
+              item["dt"] = 'Tues'
+              break;
+              case 3:
+              item["dt"] = 'Wed'
+              break;
+              case 4:
+              item["dt"] = 'Thurs'
+              break;
+              case 5:
+              item["dt"] = 'Fri'
+              break;
+              case 6:
+              item["dt"] = 'Sat'
+              break;
+              default:
+             item["dt"] = 'Oops?'
+            }
+            item["newIndex"] = iterator ++
+
+          })
+          this.setState({
+            temperatures: pushedArray,
+            loaded: true
+          })
+        }
+      )
+      .catch(function(error) {
+        console.log(error);
+      })
+  }
+
   render() {
-    return (
+    if(this.state.loaded === true) {
+      return (
       <tbody>
-      <Chart
-        title={title}
-        width={width}
-        height={height}
+      <BarChart
+        showYGrid= {false}
         margins= {margins}
-        >
-        <LineChart
-          showXGrid= {false}
-          showYGrid= {false}
-          margins= {margins}
-          title={title}
-          data={chartData}
-          width={width}
-          height={height}
-          chartSeries={chartSeries}
-          x={x}
-        />
-      </Chart>
-      </tbody>
-    )
+        title={title}
+        data={this.state.temperatures}
+        width={width}
+        chartSeries={chartSeries}
+        x={x}
+        xScale = {xScale}
+        xLabel = {xLabel}
+        yLabel = {yLabel}
+      />
+    </tbody>
+  )
+}
+if(this.state.loaded === false) {
+  return (
+    <tbody>
+  <BarChart
+    showYGrid= {false}
+    margins= {margins}
+    data={this.state.temperatures}
+    width={width}
+    chartSeries={chartSeries}
+    x={x}
+  />
+</tbody>
+)
+}
+
+
   }
 
 }

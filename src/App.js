@@ -13,7 +13,6 @@ class App extends Component {
       input: '',
       zipcode: '',
     }
-     this.onButtonSubmit = this.onButtonSubmit.bind(this);
   }
 
 
@@ -25,16 +24,17 @@ class App extends Component {
   }
 
   render() {
-    const {zipcode, weather} = this.state;
-    return (<section>
-      <div className="flex flex-column items-center">
-        <Navbar/>
-        <InputForm onInputChange={this.onInputChange}  onButtonSubmit={this.onButtonSubmit} />
-        <Map zipcode={zipcode}/>
-      </div>
+    const {zipcode } = this.state;
+    return (
 
-      <WeatherChart zipcode = {zipcode}/>
-    </section>);
+      <div className="w-100 flex flex-column items-center avenir">
+        <Navbar/>
+        <InputForm className = "w-80" onInputChange={this.onInputChange}  onButtonSubmit={this.onButtonSubmit} />
+        <div>
+        <Map className = "w-80" zipcode = {zipcode}/>
+        </div>
+        <WeatherChart className = "w-100 flex flex-column items-center"zipcode = {zipcode}/>
+      </div>);
   }
 }
 
